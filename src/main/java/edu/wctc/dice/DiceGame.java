@@ -1,5 +1,6 @@
 package edu.wctc.dice;
 
+import edu.wctc.dice.iface.GameDice;
 import edu.wctc.dice.iface.GameInput;
 import edu.wctc.dice.iface.GameOutput;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,15 +15,17 @@ import java.util.Random;
 public class DiceGame {
     private GameInput in;
     private GameOutput out;
+    private GameDice dice;
 
     private List<Player> players = new ArrayList<>();
     private int currentRound = 1;
 
 
     @Autowired
-    public DiceGame(GameInput in, GameOutput out) {
+    public DiceGame(GameInput in, GameOutput out, GameDice dice) {
         this.in = in;
         this.out = out;
+        this.dice = dice;
         System.out.println("DiceGame created");
     }
 
@@ -114,8 +117,8 @@ public class DiceGame {
     }
 
     private boolean rollDice() {
-        int die1 = rollDie();
-        int die2 = rollDie();
+        int die1 = dice.rollDie();
+        int die2 = dice.rollDie();
 
         // Players win on even totals
         boolean even = (die1 + die2) % 2 == 0;
@@ -129,9 +132,9 @@ public class DiceGame {
         return even;
     }
 
-    private int rollDie() {
-        Random random = new Random();
-        return random.nextInt(6) + 1;
-//        return dieRoller.rollDie();
-    }
+//    private int rollDie() {
+//        Random random = new Random();
+//        return random.nextInt(6) + 1;
+////        return dieRoller.rollDie();
+//    }
 }
